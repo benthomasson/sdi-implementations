@@ -1,0 +1,1322 @@
+[
+  {
+    "title": "Hash ring implementation; foundational partitioning primitive used conceptually across many other designs",
+    "kind": "file",
+    "target": "consistent-hashing/consistent_hashing.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Storage engine internals (replication, consistency model, partitioning); reveals codebase's approach to data modeling",
+    "kind": "file",
+    "target": "key-value-store/key_value_store.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Message ordering, consumer groups, delivery guarantees; backbone pattern for async systems",
+    "kind": "file",
+    "target": "distributed-message-queue/solution.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Idempotency and transaction patterns; highest correctness bar in the collection",
+    "kind": "file",
+    "target": "payment-system/payment_system.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Algorithm implementations (token bucket, sliding window); cross-cutting API protection concern",
+    "kind": "file",
+    "target": "rate-limiter/rate_limiter.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Order matching engine; reveals low-latency data structure choices (order book, price-time priority)",
+    "kind": "file",
+    "target": "stock-exchange/solution.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Real-time messaging architecture; different flavor from request/response systems",
+    "kind": "file",
+    "target": "chat-system/chat_system.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Stream processing and windowed aggregation; event-driven architecture patterns",
+    "kind": "file",
+    "target": "ad-click-event-aggregation/click_aggregator.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Fan-out-on-write vs read trade-off; classic SDI design decision",
+    "kind": "file",
+    "target": "news-feed-system/news_feed.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Inventory concurrency control; pessimistic vs optimistic locking patterns",
+    "kind": "file",
+    "target": "hotel-reservation-system/hotel_reservation.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "File sync and conflict resolution; potentially CRDT or OT patterns",
+    "kind": "file",
+    "target": "design-google-drive/design_google_drive.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Distributed crawl frontier; URL scheduling, politeness, deduplication",
+    "kind": "file",
+    "target": "web-crawler/web_crawler.py",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Identify shared design patterns across implementations (idempotency, retry, circuit breaker, sharding strategies)",
+    "kind": "general",
+    "target": "cross-cutting-patterns",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Compare how different implementations handle consistency (eventual vs strong, CAP trade-offs made)",
+    "kind": "general",
+    "target": "consistency-models",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "Do implementations match their plans? Where do they diverge and why?",
+    "kind": "general",
+    "target": "plan-to-implementation-fidelity",
+    "source": "scan:sdi-implementations",
+    "status": "done",
+    "added": "2026-06-05T13:14:34"
+  },
+  {
+    "title": "See how balance, migration, and replication are verified; the test patterns reveal the intended contract more precisely than the implementation alone",
+    "kind": "file",
+    "target": "consistent-hashing/test_consistent_hashing.py",
+    "source": "file:consistent-hashing/consistent_hashing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:15:44"
+  },
+  {
+    "title": "Understand the design decisions and trade-offs considered before implementation (e.g., why 150 vnodes, why MD5)",
+    "kind": "file",
+    "target": "consistent-hashing/plan.md",
+    "source": "file:consistent-hashing/consistent_hashing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:15:44"
+  },
+  {
+    "title": "`get_stats` measures theoretical ring arc ownership while `get_distribution` measures empirical key counts; understanding when these diverge matters for capacity planning",
+    "kind": "general",
+    "target": "ring-ownership-vs-key-distribution",
+    "source": "file:consistent-hashing/consistent_hashing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:15:44"
+  },
+  {
+    "title": "The clockwise walk for replication is where virtual-node-aware deduplication happens; worth tracing with a small ring to understand edge cases (e.g., fewer physical nodes than requested replicas)",
+    "kind": "function",
+    "target": "consistent-hashing/consistent_hashing.py:get_nodes",
+    "source": "file:consistent-hashing/consistent_hashing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:15:44"
+  },
+  {
+    "title": "Google's \"consistent hashing with bounded loads\" adds a capacity cap per node to prevent hotspots even when the ring is balanced; a natural next step for this implementation",
+    "kind": "general",
+    "target": "bounded-loads-extension",
+    "source": "file:consistent-hashing/consistent_hashing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:15:44"
+  },
+  {
+    "title": "See how quorum failures, conflict resolution, anti-entropy, and hinted handoff are exercised in tests",
+    "kind": "file",
+    "target": "key-value-store/test_key_value_store.py",
+    "source": "file:key-value-store/key_value_store.py",
+    "status": "pending",
+    "added": "2026-06-05T13:16:51"
+  },
+  {
+    "title": "The fallback to brute-force comparison means this doesn't get the O(log n) diffing benefit of a real Merkle tree; worth understanding the gap",
+    "kind": "function",
+    "target": "key-value-store/key_value_store.py:MerkleTree.find_differences",
+    "source": "file:key-value-store/key_value_store.py",
+    "status": "pending",
+    "added": "2026-06-05T13:16:51"
+  },
+  {
+    "title": "The backup-node write in `put` is a sloppy quorum (write goes to a node not in the preference list); trace how this interacts with `deliver_hints` to restore strict quorum membership",
+    "kind": "general",
+    "target": "dynamo-sloppy-quorum",
+    "source": "file:key-value-store/key_value_store.py",
+    "status": "pending",
+    "added": "2026-06-05T13:16:51"
+  },
+  {
+    "title": "`VectorClock.prune` discards low-counter entries, which can cause false concurrency detection; worth reasoning through when this matters",
+    "kind": "general",
+    "target": "vector-clock-pruning-tradeoffs",
+    "source": "file:key-value-store/key_value_store.py",
+    "status": "pending",
+    "added": "2026-06-05T13:16:51"
+  },
+  {
+    "title": "How the delivery semantics (at-least-once, at-most-once, exactly-once), rebalancing, and DLQ are tested; reveals edge cases the implementation handles",
+    "kind": "file",
+    "target": "distributed-message-queue/test_solution.py",
+    "source": "file:distributed-message-queue/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:17:57"
+  },
+  {
+    "title": "How the stock exchange reuses this message queue as an event bus for order matching, showing cross-module integration",
+    "kind": "function",
+    "target": "stock-exchange/solution.py:publish",
+    "source": "file:distributed-message-queue/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:17:57"
+  },
+  {
+    "title": "Kafka's range vs. round-robin vs. sticky assignors compared to the simple modular assignment used here",
+    "kind": "general",
+    "target": "consumer-rebalance-strategies",
+    "source": "file:distributed-message-queue/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:17:57"
+  },
+  {
+    "title": "The design decisions and tradeoffs documented before implementation; context for why certain simplifications were made",
+    "kind": "file",
+    "target": "distributed-message-queue/plan.md",
+    "source": "file:distributed-message-queue/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:17:57"
+  },
+  {
+    "title": "How the unbounded `seen_message_ids` set compares to Kafka's idempotent producer + transactional consumer approach, and the memory implications",
+    "kind": "general",
+    "target": "exactly-once-semantics-tradeoffs",
+    "source": "file:distributed-message-queue/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:17:57"
+  },
+  {
+    "title": "See how idempotency, retry, refund edge cases, and ledger integrity are tested",
+    "kind": "file",
+    "target": "payment-system/test_payment_system.py",
+    "source": "file:payment-system/payment_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:18:50"
+  },
+  {
+    "title": "The design rationale and interview-style requirements that drove this implementation",
+    "kind": "file",
+    "target": "payment-system/plan.md",
+    "source": "file:payment-system/payment_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:18:50"
+  },
+  {
+    "title": "The retry/backoff strategy and how it interacts with the injectable processor",
+    "kind": "function",
+    "target": "payment-system/payment_system.py:_call_processor_with_retry",
+    "source": "file:payment-system/payment_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:18:50"
+  },
+  {
+    "title": "The balance check and ledger write are not atomic; explore what breaks under concurrency and how real systems solve it (optimistic locking, serializable transactions)",
+    "kind": "general",
+    "target": "concurrent-payment-safety",
+    "source": "file:payment-system/payment_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:18:50"
+  },
+  {
+    "title": "Compare with the digital wallet implementation which likely tackles similar double-entry and balance concerns from a different angle",
+    "kind": "file",
+    "target": "digital-wallet/wallet.py",
+    "source": "file:payment-system/payment_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:18:50"
+  },
+  {
+    "title": "See how each algorithm is exercised, especially edge cases around window boundaries and token refill timing",
+    "kind": "file",
+    "target": "rate-limiter/test_rate_limiter.py",
+    "source": "file:rate-limiter/rate_limiter.py",
+    "status": "pending",
+    "added": "2026-06-05T13:19:44"
+  },
+  {
+    "title": "Understand the design decisions and trade-offs considered before implementation",
+    "kind": "file",
+    "target": "rate-limiter/plan.md",
+    "source": "file:rate-limiter/rate_limiter.py",
+    "status": "pending",
+    "added": "2026-06-05T13:19:44"
+  },
+  {
+    "title": "How the weighted approximation diverges from exact sliding window log counts, and when the approximation matters in production",
+    "kind": "general",
+    "target": "sliding-window-counter-accuracy",
+    "source": "file:rate-limiter/rate_limiter.py",
+    "status": "pending",
+    "added": "2026-06-05T13:19:44"
+  },
+  {
+    "title": "How this single-node design would change with Redis-backed counters, race conditions under concurrent access, and Lua scripting for atomicity",
+    "kind": "general",
+    "target": "distributed-rate-limiting",
+    "source": "file:rate-limiter/rate_limiter.py",
+    "status": "pending",
+    "added": "2026-06-05T13:19:44"
+  },
+  {
+    "title": "The retry-after calculation for the log-based approach is the most nuanced; worth tracing through with concrete numbers",
+    "kind": "function",
+    "target": "rate-limiter/rate_limiter.py:SlidingWindowLogLimiter.get_retry_after",
+    "source": "file:rate-limiter/rate_limiter.py",
+    "status": "pending",
+    "added": "2026-06-05T13:19:44"
+  },
+  {
+    "title": "How the matching engine is tested, especially edge cases like partial fills, self-trade prevention, and multi-level sweeps",
+    "kind": "file",
+    "target": "stock-exchange/test_exchange.py",
+    "source": "file:stock-exchange/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:20:41"
+  },
+  {
+    "title": "The original system design plan, which likely covers scalability considerations (sharding by symbol, sequencer architecture) that this single-threaded implementation doesn't address",
+    "kind": "file",
+    "target": "stock-exchange/plan.md",
+    "source": "file:stock-exchange/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:20:41"
+  },
+  {
+    "title": "The matching algorithm is the heart of the system; trace through a multi-level sweep scenario (market buy consuming multiple ask levels) to understand the nested loop structure",
+    "kind": "function",
+    "target": "solution.py:OrderBook._match_order",
+    "source": "file:stock-exchange/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:20:41"
+  },
+  {
+    "title": "Real exchanges sometimes use pro-rata allocation or size-priority at certain price levels; understanding why FIFO is the default and when alternatives apply",
+    "kind": "general",
+    "target": "price-time-priority-alternatives",
+    "source": "file:stock-exchange/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:20:41"
+  },
+  {
+    "title": "See what scenarios the tests cover: edge cases in pagination, offline delivery, group membership transitions",
+    "kind": "file",
+    "target": "chat-system/test_chat_system.py",
+    "source": "file:chat-system/chat_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:21:40"
+  },
+  {
+    "title": "Understand the design rationale and what tradeoffs were considered before implementation",
+    "kind": "file",
+    "target": "chat-system/plan.md",
+    "source": "file:chat-system/chat_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:21:40"
+  },
+  {
+    "title": "The cursor-based pagination logic has subtle edge cases around forward vs backward traversal and cursor position resolution",
+    "kind": "function",
+    "target": "chat-system/chat_system.py:get_history",
+    "source": "file:chat-system/chat_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:21:40"
+  },
+  {
+    "title": "How this single-server Lamport clock approach would change with multiple servers (vector clocks, hybrid logical clocks, or server-assigned timestamps with tie-breaking)",
+    "kind": "general",
+    "target": "message-ordering-distributed",
+    "source": "file:chat-system/chat_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:21:40"
+  },
+  {
+    "title": "This implementation does fan-out-on-write (pushing to each member's queue); explore when fan-out-on-read (pull model) is preferable, especially for large groups",
+    "kind": "general",
+    "target": "fan-out-on-write-vs-read",
+    "source": "file:chat-system/chat_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:21:40"
+  },
+  {
+    "title": "See how watermark advance, late events, and dedup are tested; reveals edge cases the implementation handles",
+    "kind": "file",
+    "target": "ad-click-event-aggregation/test_click_aggregator.py",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:22:35"
+  },
+  {
+    "title": "The design rationale and interview-framing that drove the implementation choices",
+    "kind": "file",
+    "target": "ad-click-event-aggregation/plan.md",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:22:35"
+  },
+  {
+    "title": "This implementation uses tumbling windows; understand when you'd pick sliding or session windows instead and what changes structurally",
+    "kind": "general",
+    "target": "tumbling-vs-sliding-vs-session-windows",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:22:35"
+  },
+  {
+    "title": "How this single-node design would partition by `ad_id` across workers, and what the merge/reconciliation layer looks like",
+    "kind": "general",
+    "target": "distributed-aggregation-partitioning",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:22:35"
+  },
+  {
+    "title": "The watermark advance is the most complex method; trace through the finalization and pruning logic with overlapping windows in different states",
+    "kind": "function",
+    "target": "ad-click-event-aggregation/click_aggregator.py:advance_watermark",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:22:35"
+  },
+  {
+    "title": "See how the three strategies are tested and what edge cases the test suite covers (e.g., celebrity threshold crossover, pagination, unfollow cache invalidation)",
+    "kind": "file",
+    "target": "news-feed-system/test_news_feed.py",
+    "source": "file:news-feed-system/news_feed.py",
+    "status": "pending",
+    "added": "2026-06-05T13:23:33"
+  },
+  {
+    "title": "The most complex read path; worth tracing how deduplication interacts with the push/pull split and whether post ordering is preserved correctly",
+    "kind": "function",
+    "target": "news-feed-system/news_feed.py:_get_feed_hybrid",
+    "source": "file:news-feed-system/news_feed.py",
+    "status": "pending",
+    "added": "2026-06-05T13:23:33"
+  },
+  {
+    "title": "The celebrity threshold is static: if a user crosses it mid-lifecycle, already-pushed posts stay in caches while new ones switch to pull. Worth exploring whether this causes feed gaps or duplicates",
+    "kind": "general",
+    "target": "fan-out-threshold-migration",
+    "source": "file:news-feed-system/news_feed.py",
+    "status": "pending",
+    "added": "2026-06-05T13:23:33"
+  },
+  {
+    "title": "The relevance formula uses `log(1 + likes + 2*comments)` scaled by `RELEVANCE_WEIGHT=50.0`; explore how this balances recency vs. engagement and whether the weight makes older viral posts dominate",
+    "kind": "function",
+    "target": "news-feed-system/news_feed.py:_score",
+    "source": "file:news-feed-system/news_feed.py",
+    "status": "pending",
+    "added": "2026-06-05T13:23:33"
+  },
+  {
+    "title": "The external test suite likely covers edge cases beyond the inline `test_all()`, possibly concurrency simulation with threading",
+    "kind": "file",
+    "target": "hotel-reservation-system/test_hotel_reservation.py",
+    "source": "file:hotel-reservation-system/hotel_reservation.py",
+    "status": "pending",
+    "added": "2026-06-05T13:24:36"
+  },
+  {
+    "title": "The two-phase OCC implementation is the architectural centerpiece; worth tracing how it would behave under real concurrency (e.g., with threading or async)",
+    "kind": "function",
+    "target": "hotel-reservation-system/hotel_reservation.py:reserve",
+    "source": "file:hotel-reservation-system/hotel_reservation.py",
+    "status": "pending",
+    "added": "2026-06-05T13:24:36"
+  },
+  {
+    "title": "Compare this optimistic approach to pessimistic locking (SELECT FOR UPDATE); understand when each is preferred in real hotel/booking systems",
+    "kind": "general",
+    "target": "occ-vs-pessimistic-locking",
+    "source": "file:hotel-reservation-system/hotel_reservation.py",
+    "status": "pending",
+    "added": "2026-06-05T13:24:36"
+  },
+  {
+    "title": "The gap between Phase 1 (read) and Phase 2 (verify) is zero in single-threaded code, but in a distributed system this is where overbooking bugs live \u2014 worth studying how databases close this gap",
+    "kind": "general",
+    "target": "inventory-overbooking-risk",
+    "source": "file:hotel-reservation-system/hotel_reservation.py",
+    "status": "pending",
+    "added": "2026-06-05T13:24:36"
+  },
+  {
+    "title": "See how conflict detection, chunked uploads, and permission inheritance are exercised in tests",
+    "kind": "file",
+    "target": "design-google-drive/test_design_google_drive.py",
+    "source": "file:design-google-drive/design_google_drive.py",
+    "status": "pending",
+    "added": "2026-06-05T13:25:36"
+  },
+  {
+    "title": "The version vector logic is the most interview-relevant part; trace through multi-device edit scenarios",
+    "kind": "function",
+    "target": "design-google-drive/design_google_drive.py:detect_conflict",
+    "source": "file:design-google-drive/design_google_drive.py",
+    "status": "pending",
+    "added": "2026-06-05T13:25:36"
+  },
+  {
+    "title": "Understand the design decisions and tradeoffs considered before implementation",
+    "kind": "file",
+    "target": "design-google-drive/plan.md",
+    "source": "file:design-google-drive/design_google_drive.py",
+    "status": "pending",
+    "added": "2026-06-05T13:25:36"
+  },
+  {
+    "title": "Why version vectors were chosen over simpler conflict detection; how they scale with device count",
+    "kind": "general",
+    "target": "version-vector-vs-lamport-clock",
+    "source": "file:design-google-drive/design_google_drive.py",
+    "status": "pending",
+    "added": "2026-06-05T13:25:36"
+  },
+  {
+    "title": "Compare the object storage design: different chunking, deduplication, and metadata strategies for a related problem",
+    "kind": "file",
+    "target": "s3-object-storage/s3_object_storage.py",
+    "source": "file:design-google-drive/design_google_drive.py",
+    "status": "pending",
+    "added": "2026-06-05T13:25:36"
+  },
+  {
+    "title": "How each component is exercised in isolation and integration; reveals the expected contracts and edge cases",
+    "kind": "file",
+    "target": "web-crawler/test_web_crawler.py",
+    "source": "file:web-crawler/web_crawler.py",
+    "status": "pending",
+    "added": "2026-06-05T13:26:40"
+  },
+  {
+    "title": "Double hashing from a single MD5 digest; worth understanding why this approximates k independent hash functions",
+    "kind": "function",
+    "target": "web-crawler/web_crawler.py:BloomFilter._get_hashes",
+    "source": "file:web-crawler/web_crawler.py",
+    "status": "pending",
+    "added": "2026-06-05T13:26:40"
+  },
+  {
+    "title": "SimHash detects near-duplicate *documents*; MinHash detects near-duplicate *sets* \u2014 understanding when to use which is a common interview topic",
+    "kind": "general",
+    "target": "simhash-vs-minhash",
+    "source": "file:web-crawler/web_crawler.py",
+    "status": "pending",
+    "added": "2026-06-05T13:26:40"
+  },
+  {
+    "title": "The deferred-requeue mechanism for politeness; consider how this behaves under heavy load with many hosts vs. few hosts",
+    "kind": "function",
+    "target": "web-crawler/web_crawler.py:URLFrontier.get_next",
+    "source": "file:web-crawler/web_crawler.py",
+    "status": "pending",
+    "added": "2026-06-05T13:26:40"
+  },
+  {
+    "title": "The crawler uses the Bloom filter as a *gatekeeper* for the frontier; a false positive means a URL is never crawled \u2014 worth reasoning about acceptable FP rates in practice",
+    "kind": "general",
+    "target": "bloom-filter-false-positive-tradeoff",
+    "source": "file:web-crawler/web_crawler.py",
+    "status": "pending",
+    "added": "2026-06-05T13:26:40"
+  },
+  {
+    "title": "The Merkle-tree-based all-pairs sync is the most sophisticated consistency mechanism in the codebase; worth understanding how it interacts with read repair",
+    "kind": "function",
+    "target": "key-value-store/key_value_store.py:anti_entropy",
+    "source": "general:consistency-models",
+    "status": "pending",
+    "added": "2026-06-05T13:30:42"
+  },
+  {
+    "title": "Three implementations (Payment, Message Queue, Ad Click) solve exactly-once differently (idempotency keys, consumer dedup, event-id registry); comparing their failure modes reveals when each approach breaks down",
+    "kind": "general",
+    "target": "exactly-once-patterns",
+    "source": "general:consistency-models",
+    "status": "pending",
+    "added": "2026-06-05T13:30:42"
+  },
+  {
+    "title": "The three fan-out strategies are all implemented in this single method; trace how the hybrid path decides push vs. pull at the celebrity boundary",
+    "kind": "function",
+    "target": "news-feed-system/news_feed.py:get_feed",
+    "source": "general:consistency-models",
+    "status": "pending",
+    "added": "2026-06-05T13:30:42"
+  },
+  {
+    "title": "None of these implementations model network partitions, node crashes, or partial failures; exploring how each would behave under partition would reveal which consistency guarantees actually hold",
+    "kind": "general",
+    "target": "consistency-under-failure",
+    "source": "general:consistency-models",
+    "status": "pending",
+    "added": "2026-06-05T13:30:42"
+  },
+  {
+    "title": "The middleware and factory classes (lines 200\u2013259) are prescribed in detail by the plan but weren't visible in the observations; verify per-path routing and header generation match the spec",
+    "kind": "function",
+    "target": "rate-limiter/rate_limiter.py:HTTPRateLimitMiddleware",
+    "source": "general:plan-to-implementation-fidelity",
+    "status": "pending",
+    "added": "2026-06-05T13:34:23"
+  },
+  {
+    "title": "Compare the plan's state machine (CREATED\u2192PROCESSING\u2192COMPLETED/FAILED) against the actual transitions in `process_payment` and `refund` to verify no unreachable states exist",
+    "kind": "diff",
+    "target": "payment-system",
+    "source": "general:plan-to-implementation-fidelity",
+    "status": "pending",
+    "added": "2026-06-05T13:34:23"
+  },
+  {
+    "title": "All three systems use `current_time` injection for testability but handle the `None` default differently (rate limiter falls back to `time.time()`, chat system falls back to `0.0`); this inconsistency could cause subtle bugs in integration scenarios",
+    "kind": "general",
+    "target": "retry-and-time-simulation",
+    "source": "general:plan-to-implementation-fidelity",
+    "status": "pending",
+    "added": "2026-06-05T13:34:23"
+  },
+  {
+    "title": "This implementation uses tumbling windows; understand when you'd need sliding or session windows instead and how the data structures change",
+    "kind": "general",
+    "target": "sliding-vs-tumbling-windows",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:41:43"
+  },
+  {
+    "title": "The `windows[ad_id]` keying is a natural partition key; explore how this maps to MapReduce or stream-processing topologies (e.g., Kafka Streams repartitioning by ad_id)",
+    "kind": "general",
+    "target": "distributed-aggregation-sharding",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:41:43"
+  },
+  {
+    "title": "The most complex method; trace through the window lifecycle transitions and dedup pruning to understand the finalization guarantees",
+    "kind": "function",
+    "target": "click_aggregator.py:advance_watermark",
+    "source": "file:ad-click-event-aggregation/click_aggregator.py",
+    "status": "pending",
+    "added": "2026-06-05T13:41:43"
+  },
+  {
+    "title": "This implementation uses a single Lamport counter; explore how a distributed version would need vector clocks or hybrid logical clocks for multi-server causal ordering",
+    "kind": "general",
+    "target": "vector-clocks-vs-lamport",
+    "source": "file:chat-system/chat_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:42:39"
+  },
+  {
+    "title": "The ring-ownership calculation uses a subtle modular arithmetic pattern worth studying for interview prep",
+    "kind": "function",
+    "target": "consistent-hashing/consistent_hashing.py:get_stats",
+    "source": "file:consistent-hashing/consistent_hashing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:43:41"
+  },
+  {
+    "title": "How `num_virtual_nodes` affects load balance vs. memory, and why 150 is a common default (empirical sweet spot for 5-50 nodes)",
+    "kind": "general",
+    "target": "virtual-node-count-tuning",
+    "source": "file:consistent-hashing/consistent_hashing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:43:41"
+  },
+  {
+    "title": "The reserve-then-release pattern in `init_chunked_upload` / `complete_chunked_upload` has a subtle double-counting guard worth tracing carefully",
+    "kind": "general",
+    "target": "chunked-upload-quota-accounting",
+    "source": "file:design-google-drive/design_google_drive.py",
+    "status": "pending",
+    "added": "2026-06-05T13:44:44"
+  },
+  {
+    "title": "See how the pipeline, counters, and recommendation engine are exercised; reveals edge cases the implementation handles",
+    "kind": "file",
+    "target": "design-youtube/test_design_youtube.py",
+    "source": "file:design-youtube/design_youtube.py",
+    "status": "pending",
+    "added": "2026-06-05T13:45:43"
+  },
+  {
+    "title": "Trace how failure cascades work through the DAG; consider what happens when `thumbnail` fails but `transcode` succeeds",
+    "kind": "function",
+    "target": "design_youtube.py:ProcessingDAG.execute",
+    "source": "file:design-youtube/design_youtube.py",
+    "status": "pending",
+    "added": "2026-06-05T13:45:43"
+  },
+  {
+    "title": "Compare Morris counter estimates against exact counts at various scales to understand the precision/memory tradeoff",
+    "kind": "general",
+    "target": "morris-counter-accuracy",
+    "source": "file:design-youtube/design_youtube.py",
+    "status": "pending",
+    "added": "2026-06-05T13:45:43"
+  },
+  {
+    "title": "The HLL implementation includes the linear counting correction for small cardinalities; worth understanding when it activates and why",
+    "kind": "general",
+    "target": "hll-small-range-correction",
+    "source": "file:design-youtube/design_youtube.py",
+    "status": "pending",
+    "added": "2026-06-05T13:45:43"
+  },
+  {
+    "title": "Explore how reciprocal rank fusion blends strategies and how weight tuning affects feed composition",
+    "kind": "function",
+    "target": "design_youtube.py:RecommendationEngine.get_feed",
+    "source": "file:design-youtube/design_youtube.py",
+    "status": "pending",
+    "added": "2026-06-05T13:45:43"
+  },
+  {
+    "title": "See how concurrency, daily limits, and transfer atomicity are verified in tests",
+    "kind": "file",
+    "target": "digital-wallet/test_wallet.py",
+    "source": "file:digital-wallet/wallet.py",
+    "status": "pending",
+    "added": "2026-06-05T13:46:34"
+  },
+  {
+    "title": "Understand why transfers are excluded from the conservation check and what the 0.01 epsilon covers",
+    "kind": "function",
+    "target": "digital-wallet/wallet.py:verify_integrity",
+    "source": "file:digital-wallet/wallet.py",
+    "status": "pending",
+    "added": "2026-06-05T13:46:34"
+  },
+  {
+    "title": "Why production wallets use `Decimal` or integer-cents instead of `float`, and when the rounding strategy here breaks down",
+    "kind": "general",
+    "target": "float-vs-decimal-in-financial-systems",
+    "source": "file:digital-wallet/wallet.py",
+    "status": "pending",
+    "added": "2026-06-05T13:46:34"
+  },
+  {
+    "title": "How this single-process locking model would change with multiple service instances (two-phase commit, saga pattern, event sourcing)",
+    "kind": "general",
+    "target": "distributed-wallet-consistency",
+    "source": "file:digital-wallet/wallet.py",
+    "status": "pending",
+    "added": "2026-06-05T13:46:34"
+  },
+  {
+    "title": "See how the service API is exercised end-to-end, especially threading and draft workflows",
+    "kind": "file",
+    "target": "distributed-email-service/test_email_service.py",
+    "source": "file:distributed-email-service/email_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:47:26"
+  },
+  {
+    "title": "Linear scan search is the biggest scalability gap; worth exploring how a real system would use inverted indexes",
+    "kind": "function",
+    "target": "distributed-email-service/email_service.py:search",
+    "source": "file:distributed-email-service/email_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:47:26"
+  },
+  {
+    "title": "The current implementation stores BCC addresses in the email dict visible to all recipients, which violates BCC semantics in a real system",
+    "kind": "general",
+    "target": "bcc-privacy-leak",
+    "source": "file:distributed-email-service/email_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:47:26"
+  },
+  {
+    "title": "Design decisions and trade-offs considered before implementation",
+    "kind": "file",
+    "target": "distributed-email-service/plan.md",
+    "source": "file:distributed-email-service/email_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:47:26"
+  },
+  {
+    "title": "Integer-offset cursors break under concurrent writes; worth comparing to token-based cursors used by Gmail API",
+    "kind": "general",
+    "target": "cursor-pagination-consistency",
+    "source": "file:distributed-email-service/email_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:47:26"
+  },
+  {
+    "title": "Compare this round-robin assignment with Kafka's range/sticky assignors to understand the tradeoffs of this simplified approach",
+    "kind": "function",
+    "target": "distributed-message-queue/solution.py:ConsumerGroup.rebalance",
+    "source": "file:distributed-message-queue/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:48:26"
+  },
+  {
+    "title": "The `seen_message_ids` set grows unboundedly and lives in-memory \u2014 explore how Kafka solves this with idempotent producers and transactional offsets",
+    "kind": "general",
+    "target": "exactly-once-delivery-limitations",
+    "source": "file:distributed-message-queue/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T13:48:26"
+  },
+  {
+    "title": "See how the road network is constructed in tests and what edge cases are covered (disconnected graphs, one-way streets, alternative routes)",
+    "kind": "file",
+    "target": "google-maps/test_map_routing.py",
+    "source": "file:google-maps/map_routing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:49:37"
+  },
+  {
+    "title": "Yen's K-shortest paths has subtle correctness requirements around edge blocking and spur node selection; worth verifying against the reference algorithm",
+    "kind": "function",
+    "target": "google-maps/map_routing.py:alternative_routes",
+    "source": "file:google-maps/map_routing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:49:37"
+  },
+  {
+    "title": "The time-optimized heuristic uses global max speed, which can be very loose on mixed-speed networks; explore how contraction hierarchies or ALT heuristics improve this",
+    "kind": "general",
+    "target": "a-star-heuristic-tightness",
+    "source": "file:google-maps/map_routing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:49:37"
+  },
+  {
+    "title": "The design plan likely discusses system-level concerns (tile serving, caching, partitioning) that this implementation simplifies away",
+    "kind": "file",
+    "target": "google-maps/plan.md",
+    "source": "file:google-maps/map_routing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:49:37"
+  },
+  {
+    "title": "Alternative route algorithms: Yen's finds K-shortest, but real map apps use penalty-based or plateau methods to find *meaningfully different* routes, not just slightly different ones",
+    "kind": "general",
+    "target": "yen-vs-penalty-method",
+    "source": "file:google-maps/map_routing.py",
+    "status": "pending",
+    "added": "2026-06-05T13:49:37"
+  },
+  {
+    "title": "The design rationale document; will explain what trade-offs were intentional vs. simplified for the exercise",
+    "kind": "file",
+    "target": "hotel-reservation-system/plan.md",
+    "source": "file:hotel-reservation-system/hotel_reservation.py",
+    "status": "pending",
+    "added": "2026-06-05T13:50:39"
+  },
+  {
+    "title": "The dynamic pricing reads current occupancy, but `reserve` computes price *after* the availability check and *before* the commit \u2014 consider whether this creates a TOCTOU window where the price could be stale",
+    "kind": "general",
+    "target": "dynamic-pricing-feedback-loop",
+    "source": "file:hotel-reservation-system/hotel_reservation.py",
+    "status": "pending",
+    "added": "2026-06-05T13:50:39"
+  },
+  {
+    "title": "Whether storing multiple concurrent `VersionedValue` siblings constitutes a proper state-based CRDT, and what client-side merge semantics are assumed",
+    "kind": "general",
+    "target": "crdt-convergence",
+    "source": "file:key-value-store/key_value_store.py",
+    "status": "pending",
+    "added": "2026-06-05T13:51:53"
+  },
+  {
+    "title": "How the alert state machine transitions are exercised, and edge cases around downsampling and retention",
+    "kind": "file",
+    "target": "metrics-monitoring-and-alerting/test_metrics.py",
+    "source": "file:metrics-monitoring-and-alerting/metrics.py",
+    "status": "pending",
+    "added": "2026-06-05T13:52:50"
+  },
+  {
+    "title": "The alert state machine is the most complex logic; trace the PENDING\u2192ALERTING transition timing and the RESOLVED\u2192re-fire path",
+    "kind": "function",
+    "target": "metrics-monitoring-and-alerting/metrics.py:evaluate_alerts",
+    "source": "file:metrics-monitoring-and-alerting/metrics.py",
+    "status": "pending",
+    "added": "2026-06-05T13:52:50"
+  },
+  {
+    "title": "This system uses poll-based evaluation (caller invokes `evaluate_alerts`); compare with push-based evaluation triggered on ingest, and the tradeoffs for latency vs. computational cost",
+    "kind": "general",
+    "target": "pull-vs-push-alerting",
+    "source": "file:metrics-monitoring-and-alerting/metrics.py",
+    "status": "pending",
+    "added": "2026-06-05T13:52:50"
+  },
+  {
+    "title": "The sorted-list model has O(n) insertion; explore LSM-tree or columnar approaches (like Gorilla compression) used by real TSDB systems",
+    "kind": "general",
+    "target": "time-series-storage-tradeoffs",
+    "source": "file:metrics-monitoring-and-alerting/metrics.py",
+    "status": "pending",
+    "added": "2026-06-05T13:52:50"
+  },
+  {
+    "title": "The design rationale and requirements that shaped this implementation",
+    "kind": "file",
+    "target": "metrics-monitoring-and-alerting/plan.md",
+    "source": "file:metrics-monitoring-and-alerting/metrics.py",
+    "status": "pending",
+    "added": "2026-06-05T13:52:50"
+  },
+  {
+    "title": "Unit tests reveal the expected API usage patterns and edge cases the service was designed to handle",
+    "kind": "file",
+    "target": "nearby-friends/test_nearby_friends.py",
+    "source": "file:nearby-friends/nearby_friends.py",
+    "status": "pending",
+    "added": "2026-06-05T13:53:49"
+  },
+  {
+    "title": "QA-level tests likely cover integration scenarios, boundary conditions around TTL and distance thresholds",
+    "kind": "file",
+    "target": "nearby-friends/test_nearby_friends_qa.py",
+    "source": "file:nearby-friends/nearby_friends.py",
+    "status": "pending",
+    "added": "2026-06-05T13:53:49"
+  },
+  {
+    "title": "Related geospatial system in the same repo; compare how it handles spatial indexing (likely geohash-based vs. grid-based here)",
+    "kind": "file",
+    "target": "proximity-service/proximity_service.py",
+    "source": "file:nearby-friends/nearby_friends.py",
+    "status": "pending",
+    "added": "2026-06-05T13:53:49"
+  },
+  {
+    "title": "This implementation uses a uniform grid; geohashes (used by Redis GEO) handle the latitude-distortion problem and support variable precision \u2014 worth comparing approaches",
+    "kind": "general",
+    "target": "grid-vs-geohash-tradeoffs",
+    "source": "file:nearby-friends/nearby_friends.py",
+    "status": "pending",
+    "added": "2026-06-05T13:53:49"
+  },
+  {
+    "title": "The notification path doesn't use the grid index while the query path does; explore whether this is intentional or a missed optimization",
+    "kind": "function",
+    "target": "nearby-friends/nearby_friends.py:update_location",
+    "source": "file:nearby-friends/nearby_friends.py",
+    "status": "pending",
+    "added": "2026-06-05T13:53:49"
+  },
+  {
+    "title": "The celebrity threshold is evaluated at write time, creating a potential inconsistency window when a user's follower count crosses the threshold between writes; worth reasoning about in an interview",
+    "kind": "general",
+    "target": "hybrid-celebrity-threshold-race",
+    "source": "file:news-feed-system/news_feed.py",
+    "status": "pending",
+    "added": "2026-06-05T13:54:47"
+  },
+  {
+    "title": "The `_remove_author_from_cache` method does a full scan of the deque on unfollow; consider how this scales and what data structures (e.g., per-author index) could avoid O(n) scans",
+    "kind": "general",
+    "target": "fan-out-cache-invalidation",
+    "source": "file:news-feed-system/news_feed.py",
+    "status": "pending",
+    "added": "2026-06-05T13:54:47"
+  },
+  {
+    "title": "The `heapq.merge` approach assumes inputs are pre-sorted, but `get_user_posts` returns a freshly sorted list each call; consider how a persistent sorted index would change this",
+    "kind": "function",
+    "target": "news-feed-system/news_feed.py:_get_feed_pull",
+    "source": "file:news-feed-system/news_feed.py",
+    "status": "pending",
+    "added": "2026-06-05T13:54:47"
+  },
+  {
+    "title": "See how the deterministic time model and configurable failure rates are exercised in tests",
+    "kind": "file",
+    "target": "notification-system/test_notification_system.py",
+    "source": "file:notification-system/notification_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:55:58"
+  },
+  {
+    "title": "The retry backoff logic and deferred-item re-enqueue pattern are the most complex control flow; trace through a multi-retry scenario",
+    "kind": "function",
+    "target": "notification-system/notification_system.py:process_queue",
+    "source": "file:notification-system/notification_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:55:58"
+  },
+  {
+    "title": "The `_pending_groups` dict and `_group_window` field are initialized but never used \u2014 this appears to be a planned notification batching/digest feature that was never implemented",
+    "kind": "general",
+    "target": "group-key-batching",
+    "source": "file:notification-system/notification_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:55:58"
+  },
+  {
+    "title": "Quiet hours use `datetime.UTC` exclusively; explore how a real system would handle per-user timezones",
+    "kind": "general",
+    "target": "quiet-hours-timezone",
+    "source": "file:notification-system/notification_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:55:58"
+  },
+  {
+    "title": "The state machine allows `REFUNDED` \u2192 `REFUND_PENDING` \u2192 `REFUNDED` for partial refunds, but there's no guard against concurrent refunds or a terminal `FULLY_REFUNDED` state",
+    "kind": "general",
+    "target": "payment-state-machine-gaps",
+    "source": "file:payment-system/payment_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:56:58"
+  },
+  {
+    "title": "`get_balance()` does a full ledger scan on every call; in a real system this would need materialized views or running totals with reconciliation",
+    "kind": "general",
+    "target": "ledger-scan-scalability",
+    "source": "file:payment-system/payment_system.py",
+    "status": "pending",
+    "added": "2026-06-05T13:56:58"
+  },
+  {
+    "title": "How the two indexes are tested and whether edge cases (poles, antimeridian, coincident points) are covered",
+    "kind": "file",
+    "target": "proximity-service/test_proximity_service.py",
+    "source": "file:proximity-service/proximity_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:58:04"
+  },
+  {
+    "title": "Related spatial problem (real-time nearby users) likely using different techniques \u2014 compare the index approach",
+    "kind": "file",
+    "target": "nearby-friends/nearby_friends.py",
+    "source": "file:proximity-service/proximity_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:58:04"
+  },
+  {
+    "title": "When to pick geohash (database-friendly, easy sharding by prefix) versus quadtree (adaptive to density, better for skewed distributions)",
+    "kind": "general",
+    "target": "geohash-vs-quadtree-tradeoffs",
+    "source": "file:proximity-service/proximity_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:58:04"
+  },
+  {
+    "title": "The O(n) prefix scan over `_index` is a design limitation worth understanding for interview discussions",
+    "kind": "function",
+    "target": "proximity-service/proximity_service.py:GeohashIndex.nearby",
+    "source": "file:proximity-service/proximity_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:58:04"
+  },
+  {
+    "title": "Design decisions and tradeoffs considered before implementation",
+    "kind": "file",
+    "target": "proximity-service/plan.md",
+    "source": "file:proximity-service/proximity_service.py",
+    "status": "pending",
+    "added": "2026-06-05T13:58:04"
+  },
+  {
+    "title": "The `<=` boundary condition matters for correctness; worth verifying the test coverage of the half-open window semantics",
+    "kind": "function",
+    "target": "rate-limiter/rate_limiter.py:SlidingWindowLogLimiter._prune",
+    "source": "file:rate-limiter/rate_limiter.py",
+    "status": "pending",
+    "added": "2026-06-05T13:59:00"
+  },
+  {
+    "title": "The external test suite; check whether it covers edge cases the inline tests miss (empty boards, single-player boards, concurrent-timestamp ties)",
+    "kind": "file",
+    "target": "realtime-gaming-leaderboard/test_leaderboard.py",
+    "source": "file:realtime-gaming-leaderboard/leaderboard.py",
+    "status": "pending",
+    "added": "2026-06-05T14:00:19"
+  },
+  {
+    "title": "The irange bounds logic with negated scores is subtle and potentially has edge cases at boundary values; worth verifying with float edge cases",
+    "kind": "function",
+    "target": "realtime-gaming-leaderboard/leaderboard.py:range_by_score",
+    "source": "file:realtime-gaming-leaderboard/leaderboard.py",
+    "status": "pending",
+    "added": "2026-06-05T14:00:19"
+  },
+  {
+    "title": "How this compares to a Redis ZSET-based approach: SortedList gives the same O(log n) guarantees but is single-process; understanding when you'd swap this for Redis is the key scaling question",
+    "kind": "general",
+    "target": "sorted-set-vs-sortedlist",
+    "source": "file:realtime-gaming-leaderboard/leaderboard.py",
+    "status": "pending",
+    "added": "2026-06-05T14:00:19"
+  },
+  {
+    "title": "The design decisions and tradeoffs documented before implementation; likely discusses distribution strategies this single-node implementation doesn't cover",
+    "kind": "file",
+    "target": "realtime-gaming-leaderboard/plan.md",
+    "source": "file:realtime-gaming-leaderboard/leaderboard.py",
+    "status": "pending",
+    "added": "2026-06-05T14:00:19"
+  },
+  {
+    "title": "The percentile formula returns 0.0 for a single-player board regardless of rank; edge behavior worth examining if percentile accuracy matters at low player counts",
+    "kind": "general",
+    "target": "percentile-at-boundaries",
+    "source": "file:realtime-gaming-leaderboard/leaderboard.py",
+    "status": "pending",
+    "added": "2026-06-05T14:00:19"
+  },
+  {
+    "title": "Reveals edge cases the implementation handles and exposes the expected API contract through test scenarios",
+    "kind": "file",
+    "target": "s3-object-storage/test_s3_object_storage.py",
+    "source": "file:s3-object-storage/s3_object_storage.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:20"
+  },
+  {
+    "title": "The prefix/delimiter/pagination interaction is the most complex logic in the file; worth tracing with concrete examples to verify the common-prefix folding is correct",
+    "kind": "function",
+    "target": "s3-object-storage/s3_object_storage.py:list_objects",
+    "source": "file:s3-object-storage/s3_object_storage.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:20"
+  },
+  {
+    "title": "The policy evaluation order and default-allow semantics differ from real AWS IAM (which defaults to deny); worth examining whether tests cover DENY-before-ALLOW ordering",
+    "kind": "function",
+    "target": "s3-object-storage/s3_object_storage.py:check_bucket_policy",
+    "source": "file:s3-object-storage/s3_object_storage.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:20"
+  },
+  {
+    "title": "How delete markers interact with `list_objects`, `get_object`, and `delete_bucket` to understand the full soft-delete lifecycle",
+    "kind": "general",
+    "target": "versioning-delete-marker-lifecycle",
+    "source": "file:s3-object-storage/s3_object_storage.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:20"
+  },
+  {
+    "title": "The design plan likely documents which S3 features were intentionally scoped in or out",
+    "kind": "file",
+    "target": "s3-object-storage/plan.md",
+    "source": "file:s3-object-storage/s3_object_storage.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:20"
+  },
+  {
+    "title": "The actual test suite this script runs; understanding the tests is the reason this file exists",
+    "kind": "file",
+    "target": "search-autocomplete/test_search_autocomplete.py",
+    "source": "file:search-autocomplete/run_tests.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:49"
+  },
+  {
+    "title": "The implementation under test; the system being validated",
+    "kind": "file",
+    "target": "search-autocomplete/search_autocomplete.py",
+    "source": "file:search-autocomplete/run_tests.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:49"
+  },
+  {
+    "title": "Identical pattern in another module; confirms this is a repo convention, not a one-off",
+    "kind": "file",
+    "target": "url-shortener/run_tests.py",
+    "source": "file:search-autocomplete/run_tests.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:49"
+  },
+  {
+    "title": "Design decisions and scope for the search-autocomplete system",
+    "kind": "file",
+    "target": "search-autocomplete/plan.md",
+    "source": "file:search-autocomplete/run_tests.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:49"
+  },
+  {
+    "title": "Understanding what pytest's integer return codes mean (0\u20135) and how CI systems consume them",
+    "kind": "general",
+    "target": "pytest-exit-codes",
+    "source": "file:search-autocomplete/run_tests.py",
+    "status": "pending",
+    "added": "2026-06-05T14:01:49"
+  },
+  {
+    "title": "The heart of write-path performance; trace through a multi-level insert to see how caches propagate bottom-up",
+    "kind": "function",
+    "target": "search-autocomplete/search_autocomplete.py:_update_caches_on_path",
+    "source": "file:search-autocomplete/search_autocomplete.py",
+    "status": "pending",
+    "added": "2026-06-05T14:02:52"
+  },
+  {
+    "title": "Current delete is soft (nodes remain); explore whether structural pruning would improve memory for high-churn workloads",
+    "kind": "general",
+    "target": "trie-pruning-on-delete",
+    "source": "file:search-autocomplete/search_autocomplete.py",
+    "status": "pending",
+    "added": "2026-06-05T14:02:52"
+  },
+  {
+    "title": "Limited to last-char edits; compare against full edit-distance approaches and understand the latency tradeoff",
+    "kind": "function",
+    "target": "search-autocomplete/search_autocomplete.py:fuzzy_suggest",
+    "source": "file:search-autocomplete/search_autocomplete.py",
+    "status": "pending",
+    "added": "2026-06-05T14:02:52"
+  },
+  {
+    "title": "The core matching loop; trace through a multi-level fill to understand how price levels drain and clean up",
+    "kind": "function",
+    "target": "stock-exchange/solution.py:OrderBook._match_order",
+    "source": "file:stock-exchange/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T14:03:52"
+  },
+  {
+    "title": "This engine uses strict FIFO; understanding pro-rata matching (used in options/futures) clarifies why FIFO is the default for equities",
+    "kind": "general",
+    "target": "price-time-priority-vs-pro-rata",
+    "source": "file:stock-exchange/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T14:03:52"
+  },
+  {
+    "title": "How this single-threaded design would need to change for a multi-threaded engine (lock-free queues, sharded books, sequencer pattern)",
+    "kind": "general",
+    "target": "concurrent-matching-engine-design",
+    "source": "file:stock-exchange/solution.py",
+    "status": "pending",
+    "added": "2026-06-05T14:03:52"
+  },
+  {
+    "title": "See how clock injection is used to test Snowflake edge cases (overflow, backward clock) and how monotonicity is verified across generators",
+    "kind": "file",
+    "target": "unique-id-generator/test_unique_id_generator.py",
+    "source": "file:unique-id-generator/unique_id_generator.py",
+    "status": "pending",
+    "added": "2026-06-05T14:04:45"
+  },
+  {
+    "title": "Round-trip decomposition of Snowflake IDs back to components; useful for understanding the bit-packing layout",
+    "kind": "function",
+    "target": "unique-id-generator/unique_id_generator.py:SnowflakeGenerator.parse",
+    "source": "file:unique-id-generator/unique_id_generator.py",
+    "status": "pending",
+    "added": "2026-06-05T14:04:45"
+  },
+  {
+    "title": "Compare the 64-bit compact sortable ID (Snowflake) against the 128-bit lexicographically sortable ID (ULID) in terms of database indexing, storage, and coordination requirements",
+    "kind": "general",
+    "target": "snowflake-vs-ulid-tradeoffs",
+    "source": "file:unique-id-generator/unique_id_generator.py",
+    "status": "pending",
+    "added": "2026-06-05T14:04:45"
+  },
+  {
+    "title": "How step/offset interleaving achieves uniqueness across N ticket servers without coordination, and the failure modes when a server goes down and comes back with stale state",
+    "kind": "general",
+    "target": "ticket-server-multi-node",
+    "source": "file:unique-id-generator/unique_id_generator.py",
+    "status": "pending",
+    "added": "2026-06-05T14:04:45"
+  },
+  {
+    "title": "See how expiration, rate limiting, and both strategies are exercised in tests",
+    "kind": "file",
+    "target": "url-shortener/test_url_shortener.py",
+    "source": "file:url-shortener/url_shortener.py",
+    "status": "pending",
+    "added": "2026-06-05T14:05:47"
+  },
+  {
+    "title": "Understand the collision resolution loop and why SHA-256 truncation makes collisions plausible at ~3.5T codes",
+    "kind": "function",
+    "target": "url-shortener/url_shortener.py:_generate_hash_code",
+    "source": "file:url-shortener/url_shortener.py",
+    "status": "pending",
+    "added": "2026-06-05T14:05:47"
+  },
+  {
+    "title": "Design decisions and tradeoffs documented before implementation",
+    "kind": "file",
+    "target": "url-shortener/plan.md",
+    "source": "file:url-shortener/url_shortener.py",
+    "status": "pending",
+    "added": "2026-06-05T14:05:47"
+  },
+  {
+    "title": "When predictability (counter) vs determinism (hash) matters in URL shortening \u2014 hash gives you deduplication for free, counter gives you guaranteed O(1) generation",
+    "kind": "general",
+    "target": "counter-vs-hash-tradeoffs",
+    "source": "file:url-shortener/url_shortener.py",
+    "status": "pending",
+    "added": "2026-06-05T14:05:47"
+  },
+  {
+    "title": "Compare ID generation strategies \u2014 the unique ID generator likely tackles similar encoding/distribution problems in a distributed context",
+    "kind": "file",
+    "target": "unique-id-generator/unique_id_generator.py",
+    "source": "file:url-shortener/url_shortener.py",
+    "status": "pending",
+    "added": "2026-06-05T14:05:47"
+  },
+  {
+    "title": "This implementation is single-node; distributing the frontier across crawlers (partitioning by URL hash) is the key scaling step in a real system design interview",
+    "kind": "general",
+    "target": "consistent-hashing-for-distributed-crawling",
+    "source": "file:web-crawler/web_crawler.py",
+    "status": "pending",
+    "added": "2026-06-05T14:06:50"
+  }
+]
