@@ -351,3 +351,60 @@ def test_quiet_hours_utc():
     ts2 = calendar.timegm(dt2.timetuple())
     service.process_queue(current_time=ts2)
     assert service.get_status("qz1") == DeliveryStatus.DELIVERED
+
+
+def test_notification_grouping():
+    """Notifications with the same group_key collapse into one."""
+    service = make_service()
+    for i in range(5):
+        service.send(Notification(
+            id=f"g{i}", user_id="u1", channel=Channel.PUSH,
+            priority=Priority.NORMAL, raw_content={"msg": f"event {i}"},
+            group_key="new_message",
+        ), current_time=1000.0 + i)
+
+    service.process_queue(current_time=1010.0)
+    push_log = service.channels[Channel.PUSH].get_sent_log()
+    assert len(push_log) == 1
+    assert push_log[0]["content"]["count"] == 5
+
+
+def test_notification_grouping_single():
+    """A single grouped notification is delivered as-is, not collapsed."""
+    service = make_service()
+    service.send(Notification(
+        id="solo", user_id="u1", channel=Channel.PUSH,
+        priority=Priority.NORMAL, raw_content={"msg": "just one"},
+        group_key="alerts",
+    ), current_time=1000.0)
+    service.process_queue(current_time=1010.0)
+    assert service.get_status("solo") == DeliveryStatus.DELIVERED
+    push_log = service.channels[Channel.PUSH].get_sent_log()
+    assert len(push_log) == 1
+    assert push_log[0]["content"]["msg"] == "just one"
+
+
+def test_notification_grouping_window_flush():
+    """Group is flushed when the window expires on a new send."""
+    service = make_service()
+    service._group_window = 2.0
+    service.send(Notification(
+        id="w1", user_id="u1", channel=Channel.PUSH,
+        priority=Priority.NORMAL, raw_content={"msg": "first"},
+        group_key="batch",
+    ), current_time=100.0)
+    service.send(Notification(
+        id="w2", user_id="u1", channel=Channel.PUSH,
+        priority=Priority.NORMAL, raw_content={"msg": "second"},
+        group_key="batch",
+    ), current_time=101.0)
+    # Third send arrives after window — all three flush together
+    service.send(Notification(
+        id="w3", user_id="u1", channel=Channel.PUSH,
+        priority=Priority.NORMAL, raw_content={"msg": "third"},
+        group_key="batch",
+    ), current_time=103.0)
+    service.process_queue(current_time=103.0)
+    push_log = service.channels[Channel.PUSH].get_sent_log()
+    assert len(push_log) == 1
+    assert push_log[0]["content"]["count"] == 3

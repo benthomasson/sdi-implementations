@@ -228,11 +228,45 @@ class NotificationService:
             self._notifications[notification.id] = notification
             return notification.id
 
-        self._update_status(notification, DeliveryStatus.QUEUED, current_time)
         self._notifications[notification.id] = notification
+
+        if notification.group_key:
+            group = (notification.user_id, notification.group_key)
+            self._pending_groups[group].append(notification)
+            first = self._pending_groups[group][0]
+            if current_time - first.created_at >= self._group_window:
+                self._flush_group(group, current_time)
+            return notification.id
+
+        self._enqueue(notification, current_time)
+        return notification.id
+
+    def _enqueue(self, notification: Notification, current_time: float):
+        self._update_status(notification, DeliveryStatus.QUEUED, current_time)
         self._seq += 1
         heapq.heappush(self._queue, (notification.priority, current_time, self._seq, notification))
-        return notification.id
+
+    def _flush_group(self, group: tuple[str, str], current_time: float):
+        pending = self._pending_groups.pop(group, [])
+        if not pending:
+            return
+        if len(pending) == 1:
+            self._enqueue(pending[0], current_time)
+            return
+        best_priority = min(n.priority for n in pending)
+        collapsed = Notification(
+            id=pending[0].id,
+            user_id=pending[0].user_id,
+            channel=pending[0].channel,
+            priority=best_priority,
+            raw_content={"message": f"You have {len(pending)} new notifications", "count": len(pending)},
+            created_at=pending[0].created_at,
+            group_key=pending[0].group_key,
+        )
+        self._notifications[collapsed.id] = collapsed
+        for n in pending[1:]:
+            self._update_status(n, DeliveryStatus.DELIVERED, current_time)
+        self._enqueue(collapsed, current_time)
 
     def send_batch(self, notifications: list[Notification], current_time: float = None) -> list[str]:
         return [self.send(n, current_time) for n in notifications]
@@ -258,6 +292,10 @@ class NotificationService:
     def process_queue(self, current_time: float = None) -> int:
         """Process all queued notifications. Returns count of delivered."""
         current_time = current_time if current_time is not None else 0.0
+
+        for group in list(self._pending_groups.keys()):
+            self._flush_group(group, current_time)
+
         delivered = 0
         deferred = []
 
