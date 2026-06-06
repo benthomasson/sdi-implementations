@@ -183,6 +183,8 @@ class KVStore:
         self.n = n
         self.w = w
         self.r = r
+        if w + r <= n:
+            raise ValueError(f"Quorum overlap required: W({w}) + R({r}) must be > N({n})")
         self.suspect_timeout = suspect_timeout
         self.down_timeout = down_timeout
         self.nodes: dict[str, KVNode] = {}

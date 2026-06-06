@@ -102,12 +102,20 @@ class NearbyFriendsService:
             self._grid[new_cell].add(user_id)
             self._user_cell[user_id] = new_cell
 
-        # Notify nearby friends
+        # Notify nearby friends using grid index
         notified = []
         if not self._sharing.get(user_id, True):
             return notified
 
-        for friend_id in self._friends.get(user_id, set()):
+        friend_ids = self._friends.get(user_id, set())
+        if not friend_ids:
+            return notified
+
+        candidate_ids = set()
+        for cell in self._neighbor_cells(new_cell):
+            candidate_ids.update(self._grid.get(cell, set()))
+
+        for friend_id in candidate_ids & friend_ids:
             if not self._sharing.get(friend_id, True):
                 continue
             friend_loc = self._locations.get(friend_id)

@@ -1,5 +1,6 @@
 """Payment processing system with idempotency, double-entry bookkeeping, and retry logic."""
 
+import threading
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -46,6 +47,7 @@ class PaymentSystem:
         self._processor = lambda amount, currency, payer, payee: {"status": "success"}
         self._max_retries = 3
         self._base_delay = 0.1
+        self._lock = threading.Lock()
 
     def create_account(self, account_id, currency="USD", initial_balance=0):
         """Create an account with optional initial balance."""
@@ -96,53 +98,54 @@ class PaymentSystem:
             self._fire_webhook("payment.failed", payment)
             return payment
 
-        # Balance check
-        if self.get_balance(payer_id) < amount:
+        with self._lock:
+            # Balance check
+            if self.get_balance(payer_id) < amount:
+                payment = Payment(
+                    payment_id=str(uuid.uuid4()), amount=amount, currency=currency,
+                    payer_id=payer_id, payee_id=payee_id, status="FAILED",
+                    idempotency_key=idempotency_key,
+                )
+                self._payments[payment.payment_id] = payment
+                self._idempotency[idempotency_key] = payment.payment_id
+                self._fire_webhook("payment.failed", payment)
+                return payment
+
+            # Create payment
             payment = Payment(
                 payment_id=str(uuid.uuid4()), amount=amount, currency=currency,
-                payer_id=payer_id, payee_id=payee_id, status="FAILED",
+                payer_id=payer_id, payee_id=payee_id, status="CREATED",
                 idempotency_key=idempotency_key,
             )
             self._payments[payment.payment_id] = payment
             self._idempotency[idempotency_key] = payment.payment_id
-            self._fire_webhook("payment.failed", payment)
+            self._fire_webhook("payment.created", payment)
+
+            # Transition to PROCESSING
+            payment.status = "PROCESSING"
+
+            # Call processor with retry
+            result = self._call_processor_with_retry(amount, currency, payer_id, payee_id)
+
+            if result["status"] == "success":
+                # Create ledger entries
+                self._ledger.append(LedgerEntry(
+                    entry_id=str(uuid.uuid4()), account_id=payer_id,
+                    amount=amount, currency=currency,
+                    entry_type="DEBIT", reference_id=payment.payment_id,
+                ))
+                self._ledger.append(LedgerEntry(
+                    entry_id=str(uuid.uuid4()), account_id=payee_id,
+                    amount=amount, currency=currency,
+                    entry_type="CREDIT", reference_id=payment.payment_id,
+                ))
+                payment.status = "COMPLETED"
+                self._fire_webhook("payment.completed", payment)
+            else:
+                payment.status = "FAILED"
+                self._fire_webhook("payment.failed", payment)
+
             return payment
-
-        # Create payment
-        payment = Payment(
-            payment_id=str(uuid.uuid4()), amount=amount, currency=currency,
-            payer_id=payer_id, payee_id=payee_id, status="CREATED",
-            idempotency_key=idempotency_key,
-        )
-        self._payments[payment.payment_id] = payment
-        self._idempotency[idempotency_key] = payment.payment_id
-        self._fire_webhook("payment.created", payment)
-
-        # Transition to PROCESSING
-        payment.status = "PROCESSING"
-
-        # Call processor with retry
-        result = self._call_processor_with_retry(amount, currency, payer_id, payee_id)
-
-        if result["status"] == "success":
-            # Create ledger entries
-            self._ledger.append(LedgerEntry(
-                entry_id=str(uuid.uuid4()), account_id=payer_id,
-                amount=amount, currency=currency,
-                entry_type="DEBIT", reference_id=payment.payment_id,
-            ))
-            self._ledger.append(LedgerEntry(
-                entry_id=str(uuid.uuid4()), account_id=payee_id,
-                amount=amount, currency=currency,
-                entry_type="CREDIT", reference_id=payment.payment_id,
-            ))
-            payment.status = "COMPLETED"
-            self._fire_webhook("payment.completed", payment)
-        else:
-            payment.status = "FAILED"
-            self._fire_webhook("payment.failed", payment)
-
-        return payment
 
     def _call_processor_with_retry(self, amount, currency, payer_id, payee_id):
         """Call processor with exponential backoff retry on timeout."""

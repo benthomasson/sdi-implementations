@@ -1,5 +1,6 @@
 """Chat system supporting 1:1 and group messaging."""
 
+import time
 import uuid
 import bisect
 from dataclasses import dataclass, field
@@ -98,7 +99,7 @@ class ChatServer:
     # -- Connection management --
 
     def connect(self, user_id: str, current_time: float = None):
-        current_time = current_time if current_time is not None else 0.0
+        current_time = current_time if current_time is not None else time.time()
         conn = self._get_or_create_connection(user_id)
         conn.status = UserStatus.ONLINE
         conn.last_active = current_time
@@ -121,7 +122,7 @@ class ChatServer:
                 ))
 
     def disconnect(self, user_id: str, current_time: float = None):
-        current_time = current_time if current_time is not None else 0.0
+        current_time = current_time if current_time is not None else time.time()
         conn = self._get_or_create_connection(user_id)
         conn.status = UserStatus.OFFLINE
         conn.last_active = current_time
@@ -139,7 +140,7 @@ class ChatServer:
                 ))
 
     def heartbeat(self, user_id: str, current_time: float = None):
-        current_time = current_time if current_time is not None else 0.0
+        current_time = current_time if current_time is not None else time.time()
         conn = self._get_or_create_connection(user_id)
         conn.last_active = current_time
         if conn.status != UserStatus.OFFLINE:
@@ -167,7 +168,7 @@ class ChatServer:
     def send_message(self, sender_id: str, recipient_id: str, content: str,
                      message_type: MessageType = MessageType.TEXT,
                      current_time: float = None) -> Message:
-        current_time = current_time if current_time is not None else 0.0
+        current_time = current_time if current_time is not None else time.time()
         conv_id = self._dm_conversation_id(sender_id, recipient_id)
 
         if conv_id not in self.conversations:
@@ -217,7 +218,7 @@ class ChatServer:
 
     def create_group(self, creator_id: str, name: str, member_ids: list[str],
                      current_time: float = None) -> str:
-        current_time = current_time if current_time is not None else 0.0
+        current_time = current_time if current_time is not None else time.time()
         group_id = f"group:{uuid.uuid4()}"
         members = set(member_ids) | {creator_id}
 
@@ -241,7 +242,7 @@ class ChatServer:
     def send_group_message(self, sender_id: str, group_id: str, content: str,
                            message_type: MessageType = MessageType.TEXT,
                            current_time: float = None) -> Message:
-        current_time = current_time if current_time is not None else 0.0
+        current_time = current_time if current_time is not None else time.time()
         group = self.groups[group_id]
         if sender_id not in group.members:
             raise ValueError("Sender is not a member of this group")
@@ -397,7 +398,7 @@ class ChatServer:
     # -- Typing indicators --
 
     def set_typing(self, user_id: str, conversation_id: str, current_time: float = None):
-        current_time = current_time if current_time is not None else 0.0
+        current_time = current_time if current_time is not None else time.time()
         self.typing[(user_id, conversation_id)] = current_time
 
     def clear_typing(self, user_id: str, conversation_id: str):

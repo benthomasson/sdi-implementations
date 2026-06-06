@@ -73,7 +73,7 @@ class ClickAggregator:
         self.stats["total"] += 1
 
         # Dedup check
-        if event.event_id in self.seen_events:
+        if (event.event_id, event.ad_id) in self.seen_events:
             self.stats["deduplicated"] += 1
             return False
 
@@ -94,7 +94,7 @@ class ClickAggregator:
             self.stats["late_accepted"] += 1
 
         # Record event
-        self.seen_events[event.event_id] = event.timestamp
+        self.seen_events[(event.event_id, event.ad_id)] = event.timestamp
         window.count += 1
         window.users.add(event.user_id)
         self.stats["accepted"] += 1

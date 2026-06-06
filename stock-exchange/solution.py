@@ -162,6 +162,14 @@ class OrderBook:
 
     def place_order(self, order):
         """Place an order. Returns list of trades executed."""
+        if order.quantity <= 0:
+            raise ValueError(f"Order quantity must be positive, got {order.quantity}")
+        if order.side not in ("BUY", "SELL"):
+            raise ValueError(f"Invalid side: {order.side}")
+        if order.order_type not in ("LIMIT", "MARKET"):
+            raise ValueError(f"Invalid order type: {order.order_type}")
+        if order.order_type == "LIMIT" and (order.price is None or order.price <= 0):
+            raise ValueError(f"Limit orders require a positive price, got {order.price}")
         self._orders[order.order_id] = order
         trades = self._match_order(order)
 

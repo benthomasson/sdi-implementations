@@ -47,6 +47,8 @@ class GeohashIndex:
 
     def add(self, poi: POI) -> None:
         """Add a POI to the index."""
+        if not (-90 <= poi.lat <= 90 and -180 <= poi.lon <= 180):
+            raise ValueError(f"Invalid coordinates: lat={poi.lat}, lon={poi.lon}")
         gh = self.encode(poi.lat, poi.lon, self.precision)
         self._pois[poi.id] = (poi, gh)
         self._index[gh][poi.id] = poi
@@ -250,6 +252,8 @@ class Quadtree:
 
     def insert(self, poi: POI) -> bool:
         """Insert a POI into the quadtree."""
+        if not (-90 <= poi.lat <= 90 and -180 <= poi.lon <= 180):
+            raise ValueError(f"Invalid coordinates: lat={poi.lat}, lon={poi.lon}")
         return self._root.insert(poi)
 
     def query_range(self, lat: float, lon: float, radius_km: float) -> list:

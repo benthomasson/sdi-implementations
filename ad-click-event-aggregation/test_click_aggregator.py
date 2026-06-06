@@ -20,15 +20,15 @@ def test_basic_tumbling_window():
 
 
 def test_deduplication():
-    """Duplicate event_id is rejected, count stays at 1."""
+    """Duplicate (event_id, ad_id) is rejected; same event_id for different ad is accepted."""
     agg = ClickAggregator(window_size_seconds=60)
     assert agg.process_event(ClickEvent("e1", "ad-100", "user-1", 1000.0)) is True
     assert agg.process_event(ClickEvent("e1", "ad-100", "user-1", 1000.0)) is False
-    assert agg.process_event(ClickEvent("e1", "ad-200", "user-2", 1005.0)) is False  # same ID, different ad
+    assert agg.process_event(ClickEvent("e1", "ad-200", "user-2", 1005.0)) is True  # same ID, different ad
     results = agg.query("ad-100", 960, 1080)
     assert results[0].count == 1
     stats = agg.get_stats()
-    assert stats["deduplicated"] == 2
+    assert stats["deduplicated"] == 1
 
 
 def test_late_event_accepted_within_lateness():

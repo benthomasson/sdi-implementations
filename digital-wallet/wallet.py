@@ -101,6 +101,8 @@ class WalletService:
     def create_wallet(self, wallet_id: str, owner: str, currency: str = "USD",
                       daily_limit: float = 10000.0) -> Wallet:
         """Create a new wallet."""
+        if wallet_id in self.wallets:
+            raise ValueError(f"Wallet '{wallet_id}' already exists")
         w = Wallet(wallet_id=wallet_id, owner=owner, currency=currency, daily_limit=daily_limit)
         self.wallets[wallet_id] = w
         self._record_audit("create", wallet_id, 0.0, 0.0, 0.0, f"Wallet created for {owner}")
@@ -236,7 +238,7 @@ class WalletService:
 
     def verify_integrity(self) -> bool:
         """Verify no money created or destroyed."""
-        total_deposits = sum(t.amount for t in self.transactions if t.tx_type == "deposit")
-        total_withdrawals = sum(t.amount for t in self.transactions if t.tx_type == "withdrawal")
+        total_in = sum(t.amount for t in self.transactions if t.tx_type in ("deposit", "transfer_in"))
+        total_out = sum(t.amount for t in self.transactions if t.tx_type in ("withdrawal", "transfer_out"))
         total_balances = sum(w.balance for w in self.wallets.values())
-        return abs(total_deposits - total_withdrawals - total_balances) < 0.01
+        return abs(total_in - total_out - total_balances) < 0.01

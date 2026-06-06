@@ -83,10 +83,16 @@ class HotelReservationSystem:
         # Seasonal multiplier
         seasonal_key = (hotel_id, type_id)
         if seasonal_key in self.seasonal_pricing:
+            best_match = None
+            best_span = None
             for start, end, mult in self.seasonal_pricing[seasonal_key]:
                 if start <= date <= end:
-                    price *= mult
-                    break
+                    span = (datetime.strptime(end, "%Y-%m-%d") - datetime.strptime(start, "%Y-%m-%d")).days
+                    if best_span is None or span < best_span:
+                        best_match = mult
+                        best_span = span
+            if best_match is not None:
+                price *= best_match
 
         # Dynamic pricing based on occupancy
         inv = self._get_inventory(hotel_id, type_id, date)
@@ -204,7 +210,7 @@ class HotelReservationSystem:
         dates = _date_range(res.check_in, res.check_out)
         for d in dates:
             inv = self._get_inventory(res.hotel_id, res.room_type_id, d)
-            inv["booked"] -= 1
+            inv["booked"] = max(0, inv["booked"] - 1)
             inv["version"] += 1
 
         # Determine refund based on cancellation timing

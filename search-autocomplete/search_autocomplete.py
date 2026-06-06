@@ -271,17 +271,19 @@ class AutocompleteService:
         return [(q, f) for q, f in results if not any(b in q for b in self.blocklist)]
 
     def suggest(self, prefix: str, k: int = 5, current_time: float = None) -> list[str]:
-        results = self.trie.search_prefix(prefix, k=k + len(self.blocklist) * 2, current_time=current_time)
+        fetch_k = k * 4 if self.blocklist else k
+        results = self.trie.search_prefix(prefix, k=fetch_k, current_time=current_time)
         filtered = self._filter(results)
         return [q for q, _ in filtered[:k]]
 
     def suggest_with_scores(self, prefix: str, k: int = 5, current_time: float = None) -> list[tuple[str, float]]:
-        results = self.trie.search_prefix(prefix, k=k + len(self.blocklist) * 2, current_time=current_time)
+        fetch_k = k * 4 if self.blocklist else k
+        results = self.trie.search_prefix(prefix, k=fetch_k, current_time=current_time)
         filtered = self._filter(results)
         return [(q, float(f)) for q, f in filtered[:k]]
 
     def fuzzy_suggest(self, prefix: str, k: int = 5, current_time: float = None) -> list[str]:
-        """If exact prefix has no results, try single-char edits on the last character."""
+        """If exact prefix has no results, try single-char edits at every position."""
         results = self.suggest(prefix, k, current_time)
         if results:
             return results
@@ -290,24 +292,28 @@ class AutocompleteService:
             return []
 
         candidates = set()
-        base = prefix[:-1]
         alphabet = "abcdefghijklmnopqrstuvwxyz "
 
-        # Substitution of last char
-        for ch in alphabet:
-            alt = base + ch
-            candidates.add(alt)
-
-        # Deletion of last char
-        candidates.add(base)
-
-        # Insertion after last char
+        for i in range(len(prefix)):
+            # Substitution at position i
+            for ch in alphabet:
+                candidates.add(prefix[:i] + ch + prefix[i + 1:])
+            # Deletion at position i
+            candidates.add(prefix[:i] + prefix[i + 1:])
+            # Insertion before position i
+            for ch in alphabet:
+                candidates.add(prefix[:i] + ch + prefix[i:])
+        # Insertion at the end
         for ch in alphabet:
             candidates.add(prefix + ch)
+
+        candidates.discard(prefix)
 
         all_results = []
         seen = set()
         for alt in candidates:
+            if not alt:
+                continue
             for q, f in self.trie.search_prefix(alt, k=k, current_time=current_time):
                 if q not in seen:
                     seen.add(q)

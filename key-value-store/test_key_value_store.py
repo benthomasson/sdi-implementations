@@ -67,7 +67,7 @@ def test_write_fails_without_quorum():
 
 
 def test_hinted_handoff_stores_writes():
-    store = KVStore(num_nodes=3, n=3, w=2, r=1)
+    store = KVStore(num_nodes=3, n=3, w=2, r=2)
     store.mark_node_down("node-1")
     store.put("k1", "v1")
     hints = store.hinted_handoff.get_hints("node-1")
@@ -81,7 +81,7 @@ def test_hinted_handoff_stores_writes():
 
 
 def test_delivering_hints_syncs_data():
-    store = KVStore(num_nodes=3, n=3, w=2, r=1)
+    store = KVStore(num_nodes=3, n=3, w=2, r=2)
     # Find a key whose preference list includes node-0
     # Write with node-0 down
     store.mark_node_down("node-0")
@@ -149,7 +149,7 @@ def test_gossip_updates_heartbeat_tables():
 
 
 def test_read_repair_updates_stale_replicas():
-    store = KVStore(num_nodes=3, n=3, w=1, r=2)
+    store = KVStore(num_nodes=3, n=3, w=2, r=2)
     # Write to only 1 node (w=1), then read with r=2 triggers repair
     ctx = store.put("rr_key", "repaired_value")
     pref = store._get_preference_list("rr_key", 3)
