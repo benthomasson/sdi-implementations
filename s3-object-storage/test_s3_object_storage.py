@@ -142,6 +142,26 @@ def test_delete_nonempty_bucket():
         pass
 
 
+def test_etag_integrity_verification():
+    s3 = ObjectStorage()
+    s3.create_bucket("integrity-bucket")
+    s3.put_object("integrity-bucket", "file.txt", b"original data")
+
+    # Normal read works
+    obj = s3.get_object("integrity-bucket", "file.txt")
+    assert obj["data"] == b"original data"
+
+    # Corrupt the stored data directly
+    versions = s3._buckets["integrity-bucket"].objects["file.txt"]
+    versions[0].data = b"corrupted data"
+
+    try:
+        s3.get_object("integrity-bucket", "file.txt")
+        assert False, "Should have raised ValueError"
+    except ValueError as e:
+        assert "integrity" in str(e).lower()
+
+
 if __name__ == "__main__":
     for name, func in list(globals().items()):
         if name.startswith("test_") and callable(func):

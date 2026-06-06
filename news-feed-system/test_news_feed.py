@@ -260,3 +260,23 @@ def test_pull_merges_multiple_users():
     assert feed[0].post.created_at == 2000.0
     assert feed[1].post.created_at == 1500.0
     assert feed[2].post.created_at == 1000.0
+
+
+def test_rebuild_cache_restores_feed():
+    """rebuild_cache reconstructs feed from social graph and post store."""
+    svc = NewsFeedService(strategy=FeedStrategy.FAN_OUT_ON_WRITE)
+    svc.follow("alice", "bob")
+    svc.create_post("bob", "Post 1", created_at=1000.0)
+    svc.create_post("bob", "Post 2", created_at=2000.0)
+    feed_before = svc.get_feed("alice")
+    assert len(feed_before) == 2
+
+    # Simulate cache loss
+    svc._feed_cache["alice"].clear()
+    assert len(svc.get_feed("alice")) == 0
+
+    # Rebuild restores the feed
+    svc.rebuild_cache("alice")
+    feed_after = svc.get_feed("alice")
+    assert len(feed_after) == 2
+    assert feed_after[0].post.created_at == 2000.0

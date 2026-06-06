@@ -120,12 +120,18 @@ class ObjectStorage:
                 if v.version_id == version_id:
                     if v.is_delete_marker:
                         return None
+                    self._verify_integrity(v, key)
                     return self._version_to_dict(v, include_data=True)
             return None
         latest = self._latest_version(b, key)
         if latest is None:
             return None
+        self._verify_integrity(latest, key)
         return self._version_to_dict(latest, include_data=True)
+
+    def _verify_integrity(self, version: ObjectVersion, key: str):
+        if version.data and self._etag(version.data) != version.etag:
+            raise ValueError(f"Data integrity check failed for '{key}' (version {version.version_id})")
 
     def delete_object(self, bucket: str, key: str, version_id: str = None) -> dict:
         """Delete an object or specific version."""

@@ -263,6 +263,20 @@ class NewsFeedService:
                 all_posts.append(p)
         return all_posts
 
+    def rebuild_cache(self, user_id: str):
+        """Rebuild feed cache from social graph and post store."""
+        self._feed_cache[user_id].clear()
+        following = self.graph.get_following(user_id)
+        all_posts = []
+        for followee_id in following:
+            if self.strategy == FeedStrategy.HYBRID:
+                if self.graph.get_follower_count(followee_id) > self.celebrity_threshold:
+                    continue
+            all_posts.extend(self.post_store.get_user_posts(followee_id, limit=self.cache_size))
+        all_posts.sort(key=lambda p: p.created_at, reverse=True)
+        for post in all_posts[:self.cache_size]:
+            self._feed_cache[user_id].append(post.post_id)
+
     def like(self, user_id: str, post_id: str):
         self.post_store.like_post(user_id, post_id)
 

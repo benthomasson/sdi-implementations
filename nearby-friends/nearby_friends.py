@@ -1,6 +1,7 @@
 """Nearby Friends service with geospatial indexing and pub/sub notifications."""
 
 import math
+import threading
 import time
 from collections import defaultdict, deque
 
@@ -46,6 +47,7 @@ class NearbyFriendsService:
         self._subscriptions = {}            # user_id -> callback
         self._grid = defaultdict(set)       # (row, col) -> set of user_ids
         self._user_cell = {}                # user_id -> (row, col)
+        self._lock = threading.Lock()
 
     def _get_cell(self, lat, lon):
         return (math.floor(lat / self._cell_size),
@@ -87,33 +89,34 @@ class NearbyFriendsService:
             timestamp = time.time()
 
         loc = LocationUpdate(user_id, lat, lon, timestamp)
-        self._locations[user_id] = loc
-        self._history[user_id].append(loc)
 
-        # Update grid index
-        new_cell = self._get_cell(lat, lon)
-        if user_id in self._user_cell:
-            old_cell = self._user_cell[user_id]
-            if old_cell != new_cell:
-                self._grid[old_cell].discard(user_id)
+        with self._lock:
+            self._locations[user_id] = loc
+            self._history[user_id].append(loc)
+
+            # Update grid index
+            new_cell = self._get_cell(lat, lon)
+            if user_id in self._user_cell:
+                old_cell = self._user_cell[user_id]
+                if old_cell != new_cell:
+                    self._grid[old_cell].discard(user_id)
+                    self._grid[new_cell].add(user_id)
+                    self._user_cell[user_id] = new_cell
+            else:
                 self._grid[new_cell].add(user_id)
                 self._user_cell[user_id] = new_cell
-        else:
-            self._grid[new_cell].add(user_id)
-            self._user_cell[user_id] = new_cell
 
-        # Notify nearby friends using grid index
+            # Snapshot candidates under lock
+            candidate_ids = set()
+            friend_ids = self._friends.get(user_id, set())
+            if self._sharing.get(user_id, True) and friend_ids:
+                for cell in self._neighbor_cells(new_cell):
+                    candidate_ids.update(self._grid.get(cell, set()))
+                candidate_ids &= friend_ids
+
         notified = []
-        if not self._sharing.get(user_id, True):
+        if not candidate_ids:
             return notified
-
-        friend_ids = self._friends.get(user_id, set())
-        if not friend_ids:
-            return notified
-
-        candidate_ids = set()
-        for cell in self._neighbor_cells(new_cell):
-            candidate_ids.update(self._grid.get(cell, set()))
 
         for friend_id in candidate_ids & friend_ids:
             if not self._sharing.get(friend_id, True):
@@ -150,17 +153,17 @@ class NearbyFriendsService:
         if not friend_ids:
             return []
 
-        # Use grid for spatial filtering
-        user_cell = self._user_cell.get(user_id)
-        if user_cell is None:
-            return []
-
-        candidate_ids = set()
-        for cell in self._neighbor_cells(user_cell):
-            candidate_ids.update(self._grid.get(cell, set()))
+        with self._lock:
+            user_cell = self._user_cell.get(user_id)
+            if user_cell is None:
+                return []
+            candidate_ids = set()
+            for cell in self._neighbor_cells(user_cell):
+                candidate_ids.update(self._grid.get(cell, set()))
+            candidate_ids &= friend_ids
 
         results = []
-        for fid in candidate_ids & friend_ids:
+        for fid in candidate_ids:
             if not self._sharing.get(fid, True):
                 continue
             floc = self._locations.get(fid)

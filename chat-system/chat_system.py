@@ -1,5 +1,6 @@
 """Chat system supporting 1:1 and group messaging."""
 
+import threading
 import time
 import uuid
 import bisect
@@ -76,6 +77,7 @@ class ChatServer:
         self.read_cursors: dict[tuple, int] = {}  # (user_id, conv_id) -> last_read_seq
         self.typing: dict[tuple, float] = {}  # (user_id, conv_id) -> timestamp
         self.lamport_clock: int = 0
+        self._clock_lock = threading.Lock()
         self.contacts: dict[str, set] = {}  # user_id -> set of contact user_ids
         self.user_conversations: dict[str, set] = {}  # user_id -> set of conversation_ids
 
@@ -180,9 +182,11 @@ class ChatServer:
         conv.participants.add(sender_id)
         conv.participants.add(recipient_id)
 
-        self.lamport_clock += 1
-        seq = conv.next_sequence
-        conv.next_sequence += 1
+        with self._clock_lock:
+            self.lamport_clock += 1
+            seq = conv.next_sequence
+            conv.next_sequence += 1
+            lamport_ts = self.lamport_clock
 
         msg = Message(
             message_id=str(uuid.uuid4()),
@@ -192,7 +196,7 @@ class ChatServer:
             message_type=message_type,
             timestamp=current_time,
             sequence_number=seq,
-            lamport_timestamp=self.lamport_clock,
+            lamport_timestamp=lamport_ts,
         )
         conv.messages.append(msg)
         self.messages[msg.message_id] = msg
@@ -248,9 +252,11 @@ class ChatServer:
             raise ValueError("Sender is not a member of this group")
 
         conv = self.conversations[group_id]
-        self.lamport_clock += 1
-        seq = conv.next_sequence
-        conv.next_sequence += 1
+        with self._clock_lock:
+            self.lamport_clock += 1
+            seq = conv.next_sequence
+            conv.next_sequence += 1
+            lamport_ts = self.lamport_clock
 
         msg = Message(
             message_id=str(uuid.uuid4()),
@@ -260,7 +266,7 @@ class ChatServer:
             message_type=message_type,
             timestamp=current_time,
             sequence_number=seq,
-            lamport_timestamp=self.lamport_clock,
+            lamport_timestamp=lamport_ts,
         )
         conv.messages.append(msg)
         self.messages[msg.message_id] = msg
@@ -283,18 +289,22 @@ class ChatServer:
         self.user_conversations.setdefault(user_id, set()).add(group_id)
 
         # System message
+        conv = self.conversations[group_id]
+        with self._clock_lock:
+            self.lamport_clock += 1
+            seq = conv.next_sequence
+            conv.next_sequence += 1
+            lamport_ts = self.lamport_clock
         sys_msg = Message(
             message_id=str(uuid.uuid4()),
             conversation_id=group_id,
             sender_id=added_by,
             content=f"{user_id} was added by {added_by}",
             message_type=MessageType.SYSTEM,
-            sequence_number=self.conversations[group_id].next_sequence,
+            sequence_number=seq,
+            lamport_timestamp=lamport_ts,
         )
-        self.lamport_clock += 1
-        sys_msg.lamport_timestamp = self.lamport_clock
-        self.conversations[group_id].next_sequence += 1
-        self.conversations[group_id].messages.append(sys_msg)
+        conv.messages.append(sys_msg)
         self.messages[sys_msg.message_id] = sys_msg
 
     def remove_member(self, group_id: str, user_id: str, removed_by: str):
@@ -302,18 +312,22 @@ class ChatServer:
         group.members.discard(user_id)
         self.conversations[group_id].participants.discard(user_id)
 
+        conv = self.conversations[group_id]
+        with self._clock_lock:
+            self.lamport_clock += 1
+            seq = conv.next_sequence
+            conv.next_sequence += 1
+            lamport_ts = self.lamport_clock
         sys_msg = Message(
             message_id=str(uuid.uuid4()),
             conversation_id=group_id,
             sender_id=removed_by,
             content=f"{user_id} was removed by {removed_by}",
             message_type=MessageType.SYSTEM,
-            sequence_number=self.conversations[group_id].next_sequence,
+            sequence_number=seq,
+            lamport_timestamp=lamport_ts,
         )
-        self.lamport_clock += 1
-        sys_msg.lamport_timestamp = self.lamport_clock
-        self.conversations[group_id].next_sequence += 1
-        self.conversations[group_id].messages.append(sys_msg)
+        conv.messages.append(sys_msg)
         self.messages[sys_msg.message_id] = sys_msg
 
     def get_group_info(self, group_id: str) -> GroupInfo:
